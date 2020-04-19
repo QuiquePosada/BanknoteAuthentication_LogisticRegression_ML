@@ -45,16 +45,10 @@ def calculateHyp(params,sample):
     # time.sleep(5)
     return predictedValue
 
-# def calculateHyp_Test(params,sample):
-#     acc = 0
-#     acc = params * sample
-#     acc = acc.to_numpy().sum()
-#     acc = 
-
-
 def sigmoid(z):
     """
     Takes care of the activation function given z
+
     z -> (-(b0+b1*x1...+bn*xn))
     """
     # sigmoid = 1 / (1 + math.exp(z))
@@ -67,6 +61,8 @@ def gradientDescent(params,features,learning_rate,expectedValues):
     """
     error = 0
     newParams = list(params)
+
+    # PREVIOUS Implementation
     # for param in range(len(params)):
     #     sumErrors = 0 # Keeps an accumulate of the errors
     #     acc = 0 # coefficient value
@@ -77,58 +73,40 @@ def gradientDescent(params,features,learning_rate,expectedValues):
     #         # acc = acc + (learning_rate * (expectedValues.iloc[instance] - yhat) * yhat * (1 - yhat) * )
     #     newParams[param] = params[param] - learning_rate * (1/len(features) * acc) # Here is the formula taught for gradient descent, acc is the value obtained from the sumatory
     
+    # Optimized Version
     acc = 0
     yHat = calculateHyp(params,features)
     error = yHat - expectedValues
-    # print("MY ERROR")
-    # print(error)
-    # print("MY FEAT")
-    # print(features)
-    # error = error.to_numpy()
-    # print("MY FEEEEEEEEEEAT")
-    # print(numpy.dot(error,features))
     acc = numpy.dot(error,features)  # numpy takes care of all of this by calculating the dot product, thus getting the five parameters
 
     newParams = params - learning_rate * (1 / len(features) * acc)
-
-    # print("NEW PARAMS")
-    # print(newParams)
-
-    # print("AHHHHH ACC")
-    # print(acc)
-    # time.sleep(10)
     return newParams
 
 def show_errors(params, samples, y):
     """
-	Calculates error (borrowed from Benji's implementation)
+	Calculates error (based on Benji's implementation)
+
+    params  -> Coefficientes of each parameter
+    samples -> All the training data
+    y       -> All the real output data
     """
     global __errors__
     error_acum = 0
     error = 0
 
     hyp = calculateHyp(params,samples)
-    # print("MY HYP")
-    # print(hyp)
-    # print("MY Y")
-    # print(y)
-    # error = crossEntropy(hyp,y)
     error = numpy.vectorize(crossEntropy)(hyp,y)
-
-    # print("PING0")
-    # print(error)
     # print("COUNT and SUM!!")
     # print(str(len(error)) + " SUM -> " + str(error.sum()))
     error_acum = error.sum()
-    # time.sleep(10)
 
+    # PREVIOUS Implementation
     # for instance in range(len(samples)):
     #     hyp = calculateHyp(params,samples.iloc[instance])
     #     error = crossEntropy(hyp, y.iloc[instance])
     #     error_acum = error_acum + error # this error is different from the one used to update, this is general for each sentence it is not for each individual param
 	#print("acum error %f " % (error_acum));
     mean_error_param = error_acum/len(samples)
-	#print("mean error %f " % (mean_error_param));
     __errors__.append(mean_error_param)
     return mean_error_param
 
@@ -140,12 +118,9 @@ def crossEntropy(predictedValue, realValue):
 
     log is with base e (natural logarithm)
 
-    Help from this resource -> conditionals with pandas https://guillim.github.io/pandas/2018/10/22/Pandas-if-else-on-columns.html
+    predictedValue  -> Predicted values (Hypothesis)
+    realValue       -> Real values
     """
-    # print("CROSS ENTROOPY, WEWLCOME")
-    # print(predictedValue)
-    # print(realValue)
-    # time.sleep(2)
     if realValue == 1: 
         if predictedValue == 0: # Just like in Benji's code, this prevents log(0)
             predictedValue = 0.001
@@ -171,6 +146,8 @@ def scaleData(features):
     returns the features of the dataset in a normalized manner
 
     normalizedVal = (x - min(x)) / (max(x) - min(x)))
+
+    features -> The features to be normalized in the dataset
     """
     # print("\nMAX OF DATASET")
     # print(features.max())
@@ -259,10 +236,7 @@ predicted_Values = []
 # While loop that stops until local minimum is reached or there is no further improvement in the bias
 while True:
     prevParams = list(params) # previous epoch bias
-    # if epoch % 128:
-        # alpha = alpha * 0.5
     params = gradientDescent(params,trainingFeatures,alpha,trainingLabel)
-    # params = coefficients_sgd(trainingFeatures, alpha, 100)
     error = show_errors(params, trainingFeatures, trainingLabel) # calculates the error between predicted and real data
     params = list(params) # In order to leave in same format as before -> not in a numpy array
     if(params == prevParams or epoch >= 10000 or error < 0.05): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
@@ -283,7 +257,6 @@ while True:
         print("The training lasted for " + str(finishedTrainingTime/60) + " minutes")
         break
     epoch += 1
-    # print(".",end="") # Prevents new line insertion at end of print
     print("EPOCHS -> " + str(epoch) + " and error -> " + str(error), end="\r") # Overwrites the current line
 
 plot.plot(__errors__)
