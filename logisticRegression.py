@@ -45,6 +45,24 @@ def calculateHyp(params,sample):
     # time.sleep(5)
     return predictedValue
 
+def getHyp(params,sample):
+    """
+    This just calculates the Hypothesis for one instance
+    It is the same as above but using the previous implementation
+    """
+    acc = 0
+    acc = params * sample
+    print("***")
+    print(acc)
+    acc = acc.to_numpy().sum()
+    acc = acc * (-1)
+    print("-------")
+    print(acc)
+    predictedValue = sigmoid(acc)
+    print("PREDICTED")
+    print(predictedValue)
+    return predictedValue
+
 def sigmoid(z):
     """
     Takes care of the activation function given z
@@ -94,6 +112,7 @@ def show_errors(params, samples, y):
     error_acum = 0
     error = 0
 
+    # Optimized version
     hyp = calculateHyp(params,samples)
     error = numpy.vectorize(crossEntropy)(hyp,y)
     # print("COUNT and SUM!!")
@@ -239,7 +258,7 @@ while True:
     params = gradientDescent(params,trainingFeatures,alpha,trainingLabel)
     error = show_errors(params, trainingFeatures, trainingLabel) # calculates the error between predicted and real data
     params = list(params) # In order to leave in same format as before -> not in a numpy array
-    if(params == prevParams or epoch >= 10000 or error < 0.05): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
+    if(params == prevParams or epoch >= 100 or error < 0.05): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
         # for instance in range(len(trainingFeatures)):
         #     yhat = calculateHyp(params,trainingFeatures.iloc[instance])
         #     predicted_Values.append(round(yhat))
@@ -281,7 +300,41 @@ plot.ylabel('Real Value')
 plot.xlabel('Predicted Value')
 plot.show()
 
-print("\n\n\n\nEnd of Training the Model")
+print("\n\n####################################\n\n\n\nEnd of Training the Model\n")
+
+# while True:
+#     print("This are some of the model's values : (To give you an idea)")
+#     print(dataset.sample(n=5,replace=True))
+#     print("\n\nThe model has been trained, you now have 2 options:\n\t1. Insert values by yourself in order to predict a banknote's authenticity (just keep in mind, just try these if you happen to know the values of a real banknote or if the dataset above has a authentic example ).\n\t2. Run the program with the test values from the splitting of the dataset (afterwards ending execution of program)")
+#     option = int(input("PICK AN OPTION >>>> "))
+#     if option == 1: # Custom values
+#         varianceGiven = float(input("Variance Value >>>> "))
+#         skewnessGiven = float(input("Skewness Value >>>> "))
+#         curtosisGiven = float(input("Curtosis Value >>>> "))
+#         entropyGiven = float(input("Entropy Value >>>> "))
+#         biasGiven = float(1)
+#         temp = {"Variance":varianceGiven,"Skewness":skewnessGiven,"Curtosis":curtosisGiven,"Entropy":entropyGiven}
+#         #append row to the dataframe
+#         tempData = features.loc[len(features+1)] = temp
+#         print("TEMPDATA")
+#         print(tempData)
+#         normalizedData = scaleData(tempData)
+#         tempArray = normalizedData.tail(1)
+#         tempArray.loc[len(tempData),"Bias"] = 1
+#         print("WWWWHWHW")
+#         print(tempArray)
+#         yHat = getHyp(params,tempArray)
+#         if round(yHat) == 0:
+#             print("\t!!!!COUNTERFEIT !! :(")
+#         elif round(yHat) == 1:
+#             print("\t!!!!AUTHENTIC !! :D")
+#         else:
+#             print("ERROR ... something strange happened")
+#     elif option == 2:
+#         break # Option chosen was to run test dataset
+#     else:
+#         print("\n\n!!!!ERROR : YOU HAVE CHOSEN AN INVALID OPTION, TRY AGAIN...")
+
 
 predicted_Values = []
 
