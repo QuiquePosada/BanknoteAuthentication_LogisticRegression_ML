@@ -5,14 +5,14 @@ ITESM Campus QRO
 Logistic Regression Algorithm
 """
 import sys
-import math
+# import math
 import numpy
 import pandas
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix,accuracy_score
 import matplotlib.pyplot as plot
 import time
-import seaborn
+# import seaborn
 
 from sklearn.linear_model import LogisticRegression
 
@@ -258,7 +258,7 @@ while True:
     params = gradientDescent(params,trainingFeatures,alpha,trainingLabel)
     error = show_errors(params, trainingFeatures, trainingLabel) # calculates the error between predicted and real data
     params = list(params) # In order to leave in same format as before -> not in a numpy array
-    if(params == prevParams or epoch >= 10000 or error < 0.05): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
+    if(params == prevParams or epoch >= 20000 or error < 0.041): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
         # for instance in range(len(trainingFeatures)):
         #     yhat = calculateHyp(params,trainingFeatures.iloc[instance])
         #     predicted_Values.append(round(yhat))
@@ -301,7 +301,6 @@ plot.xlabel('Predicted Value')
 plot.show()
 
 print("\n\n####################################\n\n\n\nEnd of Training the Model\n")
-
 
 predicted_Values = []
 
