@@ -302,39 +302,6 @@ plot.show()
 
 print("\n\n####################################\n\n\n\nEnd of Training the Model\n")
 
-# while True:
-#     print("This are some of the model's values : (To give you an idea)")
-#     print(dataset.sample(n=5,replace=True))
-#     print("\n\nThe model has been trained, you now have 2 options:\n\t1. Insert values by yourself in order to predict a banknote's authenticity (just keep in mind, just try these if you happen to know the values of a real banknote or if the dataset above has a authentic example ).\n\t2. Run the program with the test values from the splitting of the dataset (afterwards ending execution of program)")
-#     option = int(input("PICK AN OPTION >>>> "))
-#     if option == 1: # Custom values
-#         varianceGiven = float(input("Variance Value >>>> "))
-#         skewnessGiven = float(input("Skewness Value >>>> "))
-#         curtosisGiven = float(input("Curtosis Value >>>> "))
-#         entropyGiven = float(input("Entropy Value >>>> "))
-#         biasGiven = float(1)
-#         temp = {"Variance":varianceGiven,"Skewness":skewnessGiven,"Curtosis":curtosisGiven,"Entropy":entropyGiven}
-#         #append row to the dataframe
-#         tempData = features.loc[len(features+1)] = temp
-#         print("TEMPDATA")
-#         print(tempData)
-#         normalizedData = scaleData(tempData)
-#         tempArray = normalizedData.tail(1)
-#         tempArray.loc[len(tempData),"Bias"] = 1
-#         print("WWWWHWHW")
-#         print(tempArray)
-#         yHat = getHyp(params,tempArray)
-#         if round(yHat) == 0:
-#             print("\t!!!!COUNTERFEIT !! :(")
-#         elif round(yHat) == 1:
-#             print("\t!!!!AUTHENTIC !! :D")
-#         else:
-#             print("ERROR ... something strange happened")
-#     elif option == 2:
-#         break # Option chosen was to run test dataset
-#     else:
-#         print("\n\n!!!!ERROR : YOU HAVE CHOSEN AN INVALID OPTION, TRY AGAIN...")
-
 
 predicted_Values = []
 
