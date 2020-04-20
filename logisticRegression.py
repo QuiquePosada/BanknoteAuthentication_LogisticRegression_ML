@@ -12,7 +12,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix,accuracy_score
 import matplotlib.pyplot as plot
 import time
-# import seaborn
 
 from sklearn.linear_model import LogisticRegression
 
@@ -40,27 +39,6 @@ def calculateHyp(params,sample):
     acc = acc.sum(axis=1) # To sum by columns and not rows, axis is set to 1
     acc = acc * (-1)
     predictedValue = sigmoid(acc)
-    # print("PREDICTIONS")
-    # print(predictedValue)
-    # time.sleep(5)
-    return predictedValue
-
-def getHyp(params,sample):
-    """
-    This just calculates the Hypothesis for one instance
-    It is the same as above but using the previous implementation
-    """
-    acc = 0
-    acc = params * sample
-    print("***")
-    print(acc)
-    acc = acc.to_numpy().sum()
-    acc = acc * (-1)
-    print("-------")
-    print(acc)
-    predictedValue = sigmoid(acc)
-    print("PREDICTED")
-    print(predictedValue)
     return predictedValue
 
 def sigmoid(z):
@@ -115,8 +93,6 @@ def show_errors(params, samples, y):
     # Optimized version
     hyp = calculateHyp(params,samples)
     error = numpy.vectorize(crossEntropy)(hyp,y)
-    # print("COUNT and SUM!!")
-    # print(str(len(error)) + " SUM -> " + str(error.sum()))
     error_acum = error.sum()
 
     # PREVIOUS Implementation
@@ -144,15 +120,11 @@ def crossEntropy(predictedValue, realValue):
         if predictedValue == 0: # Just like in Benji's code, this prevents log(0)
             predictedValue = 0.001
         # return -(math.log(predictedValue))
-        # print("RESULT")
-        # print(-(numpy.log(predictedValue)))
         return -(numpy.log(predictedValue))
     else:
         if predictedValue == 1:
             predictedValue = 0.999
         # return -(math.log(1 - predictedValue))
-        # print("RESULT")
-        # print(-(numpy.log(1 - predictedValue)))
         return -(numpy.log(1 - predictedValue))
 
 def scaleData(features):
@@ -198,9 +170,9 @@ features = scaleData(features)
 print("Normalized Features")
 print(features)
 
-authentic = dataset.loc[label == 1]
+# authentic = dataset.loc[label == 1]
 
-counterfeit = dataset.loc[label == 0]
+# counterfeit = dataset.loc[label == 0]
 
 # Learning Rate for GD
 alpha = 3.5
@@ -234,6 +206,7 @@ print(trainingFeatures)
 print("TRAIN LABEL")
 print(trainingLabel)
 
+# Scikit Implementation
 lr = LogisticRegression(C=1000.0, random_state=0)
 
 lr.fit(trainingFeatures, trainingLabel)
@@ -258,7 +231,7 @@ while True:
     params = gradientDescent(params,trainingFeatures,alpha,trainingLabel)
     error = show_errors(params, trainingFeatures, trainingLabel) # calculates the error between predicted and real data
     params = list(params) # In order to leave in same format as before -> not in a numpy array
-    if(params == prevParams or epoch >= 20000 or error < 0.041): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
+    if(params == prevParams or epoch >= 20000 or error < 0.35): # the loop will only end if no further changes are made/seen in the params, the number of epochs given is reached or a given minimum error is reached
         # for instance in range(len(trainingFeatures)):
         #     yhat = calculateHyp(params,trainingFeatures.iloc[instance])
         #     predicted_Values.append(round(yhat))
